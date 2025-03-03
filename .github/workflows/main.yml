@@ -18,8 +18,13 @@ jobs:
       - name: Pull from hub
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
-        run: git pull --rebase https://JoeArtMx:${{ secrets.HF_TOKEN }}@huggingface.co/spaces/JoeArtMx/Search_Engine_llm main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git pull --rebase https://JoeArtMx:${{ secrets.HF_TOKEN }}@huggingface.co/spaces/JoeArtMx/Search_Engine_llm main || true
+          git rebase --continue || true
+          git rebase --skip || true
       - name: Push to hub
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
-        run: git push https://JoeArtMx:${{ secrets.HF_TOKEN }}@huggingface.co/spaces/JoeArtMx/Search_Engine_llm main
+        run: git push https://JoeArtMx:${{ secrets.HF_TOKEN }}@huggingface.co/spaces/JoeArtMx/Search_Engine_llm main --force
